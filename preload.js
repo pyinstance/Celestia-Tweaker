@@ -1,0 +1,36 @@
+const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  getSystemInfo: () => ipcRenderer.invoke('get-system-info'),
+  getNetworkStatus: () => ipcRenderer.invoke('get-network-status'),
+  undoLastChange: () => ipcRenderer.invoke('undo-last-change'),
+  applyTweak: (tweakId, enabled) => ipcRenderer.invoke('apply-tweak', tweakId, enabled),
+  applyTweaksBatch: (changes) => ipcRenderer.invoke('apply-tweaks-batch', changes),
+  runUtilityAction: (actionId) => ipcRenderer.invoke('run-utility-action', actionId),
+  scanJunk: () => ipcRenderer.invoke('scan-junk'),
+  getProcesses: () => ipcRenderer.invoke('get-processes'),
+  killProcess: (pid) => ipcRenderer.invoke('kill-process', pid),
+  setProcessPriority: (pid, priority) => ipcRenderer.invoke('set-process-priority', pid, priority),
+  setProcessAffinity: (pid, mode) => ipcRenderer.invoke('set-process-affinity', pid, mode),
+  setProcessEcoMode: (pid, enabled) => ipcRenderer.invoke('set-process-eco-mode', pid, enabled),
+  getStartupItems: () => ipcRenderer.invoke('get-startup-items'),
+  setStartupItem: (id, enabled) => ipcRenderer.invoke('set-startup-item', id, enabled),
+  getActivityLog: () => ipcRenderer.invoke('get-activity-log'),
+  addActivityLog: (entry) => ipcRenderer.invoke('add-activity-log', entry),
+  clearActivityLog: () => ipcRenderer.invoke('clear-activity-log'),
+  getServices: () => ipcRenderer.invoke('get-services'),
+  setServiceMode: (id, mode) => ipcRenderer.invoke('set-service-mode', id, mode),
+  applyServiceBoost: () => ipcRenderer.invoke('apply-service-boost'),
+
+  discordConfigStatus: () => ipcRenderer.invoke('discord-config-status'),
+  startDiscordAuth: () => ipcRenderer.invoke('discord-start-auth'),
+  getLatestDiscordUser: () => ipcRenderer.invoke('discord-get-latest-user'),
+  logoutDiscord: () => ipcRenderer.invoke('discord-logout'),
+  onDiscordAuthSuccess: (callback) => ipcRenderer.on('discord-auth-success', (_event, user) => callback(user)),
+  onDiscordAuthError: (callback) => ipcRenderer.on('discord-auth-error', (_event, error) => callback(error)),
+
+  minimize: () => ipcRenderer.send('window-minimize'),
+  maximize: () => ipcRenderer.send('window-maximize'),
+  close: () => ipcRenderer.send('window-close'),
+  platform: process.platform,
+});
