@@ -85,7 +85,7 @@ If something doesn’t provide value, it doesn’t exist.
 
 Clone the repository:
 
-git clone https://github.com/yourusername/celestia.git  
+git clone https://github.com/pyinstance/celestia.git  
 cd celestia  
 
 Install dependencies:
